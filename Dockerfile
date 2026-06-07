@@ -2,15 +2,18 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
+COPY tsconfig.backend.json ./
 
-RUN npm ci
+RUN npm install --ignore-engines
+
+COPY . .
 
 RUN npx tsc -p tsconfig.backend.json
 
-EXPOSE 8080
+EXPOSE 5000
 
 ENV NODE_ENV=production
-ENV PORT=8080
+ENV PORT=5000
 
 CMD ["node", "dist-backend/index.js"]

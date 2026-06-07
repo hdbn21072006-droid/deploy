@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: student-management-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: student-management-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: student-management-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: student-management-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: student-management-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: student-management-db
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GMAIL_EMAIL
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+
+databases:
+  - name: student-management-db
+    databaseName: student_management
+    user: student_app
+    plan: free
