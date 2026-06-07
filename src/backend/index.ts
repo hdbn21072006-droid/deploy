@@ -28,7 +28,7 @@ const io = new SocketIOServer(httpServer, {
 	},
 });
 
-const port = process.env.BACKEND_PORT || 5000;
+const port = process.env.PORT || process.env.BACKEND_PORT || 5000;
 
 // ──────────────────────────────────────────────
 // Middleware
