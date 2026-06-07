@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mysql, { RowDataPacket } from 'mysql2';
+import { RowDataPacket } from 'mysql2';
 import { dbPool } from '../config/database';
 import {
 	generateStreamingResponse,
@@ -35,7 +35,7 @@ const optionalAuth = (req: AuthenticatedRequest, res: any, next: () => void) => 
 // ──────────────────────────────────────────────
 // POST /api/ai/chat/stream — Chat streaming qua SSE
 // ──────────────────────────────────────────────
-router.post('/chat/stream', optionalAuth, async (req, res) => {
+router.post('/chat/stream', optionalAuth, async (req: AuthenticatedRequest, res) => {
 	const { session_id, message } = req.body as { session_id?: string; message?: string };
 
 	if (!message?.trim()) {
@@ -91,7 +91,8 @@ router.get('/history/:session_id', optionalAuth, async (req, res) => {
 	}
 
 	try {
-		const history = await getChatHistory(session_id, 20);
+		const sessionId = Array.isArray(session_id) ? session_id[0] : session_id;
+		const history = await getChatHistory(sessionId, 20);
 		res.json({
 			success: true,
 			data: { session_id, messages: history },
@@ -249,7 +250,7 @@ router.post('/embed/query', async (req, res) => {
 
 	try {
 		const embedding = await generateEmbedding(text);
-		const chunks = await retrieveRelevantChunks(embedding, 3);
+		const chunks = await retrieveRelevantChunks(embedding, '3');
 
 		res.json({
 			success: true,
