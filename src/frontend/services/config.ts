@@ -1,13 +1,13 @@
 // Trung tâm cấu hình API URL
-// Localhost khi dev, Railway URL khi production (set qua window.__ENV__ hoặc process.env)
+// Localhost khi dev, Render URL khi production (set qua Netlify environment variables)
 
 const getApiBase = (): string => {
   // Ưu tiên: biến window được inject ở index.html (runtime)
   const envUrl = (window as any).__ENV__?.REACT_APP_API_URL;
   if (envUrl) return envUrl;
 
-  // Fallback: biến build-time của UmiJS
-  const buildUrl = (process as any).env?.UMI_APP_API_URL;
+  // Fallback: biến build-time của UmiJS/Netlify
+  const buildUrl = (process as any).env?.UMI_APP_API_URL || (process as any).env?.REACT_APP_API_URL;
   if (buildUrl) return buildUrl;
 
   // Dùng cùng origin + port 5000 (tự động detect host hiện tại)
