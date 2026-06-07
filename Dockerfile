@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.backend.json ./
 
-RUN npm install --ignore-engines
+RUN npm install --ignore-engines --legacy-peer-deps
 
 COPY . .
 
